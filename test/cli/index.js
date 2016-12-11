@@ -17,6 +17,8 @@ const middlewareFiles = {
   jp: './fixtures/middlewares/jp.js'
 }
 
+const rerenderFile = './fixtures/render.js';
+
 const bin = path.join(__dirname, '../../lib/cli/bin')
 
 function cli (args) {
@@ -145,6 +147,20 @@ describe('cli', () => {
       request.get('/posts')
         .expect('X-Hello', 'World')
         .expect('X-Konnichiwa', 'Sekai', done)
+    })
+  })
+
+  describe('db.json -R rerender.js', () => {
+    beforeEach((done) => {
+      child = cli([ dbFile, '-R', rerenderFile])
+      serverReady(PORT, done)
+    })
+
+    it('should re-render ouput data', (done) => {
+      request.get('/posts')
+        .expect(200, {
+          render: 'yes!'
+        }, done)
     })
   })
 

@@ -28,6 +28,10 @@ module.exports = function () {
         alias: 'r',
         description: 'Path to routes file'
       },
+      render: {
+        alias: 'R',
+        description: 'Path to rerender file'
+      },
       middlewares: {
         alias: 'm',
         array: true,

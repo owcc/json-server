@@ -35,7 +35,7 @@ function prettyPrint (argv, object, rules) {
   console.log()
 }
 
-function createApp (source, object, routes, middlewares, argv) {
+function createApp (source, object, routes, middlewares, rerender, argv) {
   const app = jsonServer.create()
 
   let router
@@ -81,6 +81,10 @@ function createApp (source, object, routes, middlewares, argv) {
 
   router.db._.id = argv.id
   app.db = router.db
+
+  if (rerender) {
+    router.render = rerender
+  }
   app.use(router)
 
   return app
@@ -137,11 +141,18 @@ module.exports = function (argv) {
         })
       }
 
+      // Load middlewares
+      let rerender
+      if (argv.render) {
+        console.log(chalk.gray('  Loading', argv.render))
+        rerender = require(path.resolve(argv.render))
+      }
+
       // Done
       console.log(chalk.gray('  Done'))
 
       // Create app and server
-      app = createApp(source, data, routes, middlewares, argv)
+      app = createApp(source, data, routes, middlewares, rerender, argv)
       server = app.listen(argv.port, argv.host)
 
       // Enhance with a destroy function
