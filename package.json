@@ -1,5 +1,5 @@
 {
-  "name": "json-server",
+  "name": "json-server-ext",
   "version": "0.9.4",
   "description": "Serves JSON files through REST routes.",
   "main": "./lib/server/index.js",
